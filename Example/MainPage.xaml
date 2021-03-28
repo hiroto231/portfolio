@@ -3,16 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Example.ViewModel"
              mc:Ignorable="d"
              x:Class="Example.MainPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <vm:MainVM x:Key="mainVM"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
-    <StackLayout>
+    <StackLayout BindingContext="{StaticResource mainVM}" Margin="16,32,16,0">
+
         <Frame BackgroundColor="#F37E21" Padding="34" CornerRadius="0">
             <Label Text="Welcome to Weebay!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
         </Frame>
-        <Entry />
+        
         <Label Text="Sign in to view data" FontSize="Title" Padding="30,10,30,10"/>
+
         <Label Text="Additional information about application" FontSize="16" Padding="30,0,30,12"/>
+
         <Label FontSize="16" Padding="100,24,30,0">
             <Label.FormattedText>
                 <FormattedString>
@@ -22,9 +31,28 @@
                 </FormattedString>
             </Label.FormattedText>
         </Label>
-        <Entry Placeholder="Username" PlaceholderColor="Olive" />
-        <Entry Placeholder="Password" PlaceholderColor="Olive" />
-        <Button Text="Confirm"/>
+
+        <Label x:Name="greetinglabel"
+                Text="{Binding Greeting}"/>
+        <Entry x:Name="nameEntry"
+               Text="{Binding Username, Mode=TwoWay}"
+               Placeholder="Enter your name"/>
+        <Button Clicked="Button_Clicked_1"
+                Text="Confirm"/>
+        <Button Text="Clear Text"
+                Command="{Binding ClearCommand}"
+                CommandParameter="{Binding Username}"/>
+        <ListView x:Name="exampleListView"
+                  Margin="-16,0"
+                  ItemsSource="{Binding Contacts}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Name}"
+                              Detail="{Binding Email}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
     </StackLayout>
 
 </ContentPage>
